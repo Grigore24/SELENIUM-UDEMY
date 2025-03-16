@@ -8,9 +8,42 @@ import org.openqa.selenium.safari.SafariDriver;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-public class NegativeLoginTests {
+public class LoginTests {
+@Test(groups = {"positive","regression","smoke"})
+    public void testLoginFunctionality() {
+        // Open page
+        WebDriver driver = new FirefoxDriver();
+        driver.get("https://practicetestautomation.com/practice-test-login/");
 
-    @Test
+        // Type username student into Username field
+        WebElement usernameInput = driver.findElement(By.id("username"));
+        usernameInput.sendKeys("student");
+
+        // Type password Password123 into Password field
+        WebElement passwordInput = driver.findElement(By.id("password"));
+        passwordInput.sendKeys("Password123");
+
+        // Push Submit button
+        WebElement submitButton = driver.findElement(By.id("submit"));
+        submitButton.click();
+
+        // Verify new page URL contains practicetestautomation.com/logged-in-successfully/
+        String expectedUrl = "https://practicetestautomation.com/logged-in-successfully/";
+        String actualUrl = driver.getCurrentUrl();
+        Assert.assertEquals(actualUrl, expectedUrl);
+
+        // Verify new page contains expected text ('Congratulations' or 'successfully logged in')
+        String expectedMessage = "Congratulations student. You successfully logged in!";
+        String pageSource = driver.getPageSource();
+        Assert.assertTrue(pageSource.contains(expectedMessage));
+
+        // Verify button Log out is displayed on the new page
+        WebElement logOutButton = driver.findElement(By.linkText("Log out"));
+        Assert.assertTrue(logOutButton.isDisplayed());
+
+        driver.quit();
+    }
+    @Test(groups = {"negative","regression"})
     public void incorrectUsernameTest() {
         // Open page
         WebDriver driver = new FirefoxDriver();
@@ -45,7 +78,7 @@ public class NegativeLoginTests {
         driver.quit();
     }
 
-    @Test
+    @Test(groups = {"negative","regression"})
     public void incorrectPasswordTest() {
         // Open page
         WebDriver driver = new SafariDriver();
