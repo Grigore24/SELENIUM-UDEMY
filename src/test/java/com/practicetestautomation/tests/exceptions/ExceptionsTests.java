@@ -8,6 +8,7 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 import org.testng.Assert;
 import org.testng.annotations.*;
 
+import java.time.Duration;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -33,6 +34,7 @@ public class ExceptionsTests {
                 driver = new ChromeDriver();
                 break;
         }
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
 
         // Open page
         driver.get("https://practicetestautomation.com/practice-test-exceptions/");
@@ -49,11 +51,6 @@ public class ExceptionsTests {
         // Click Add button
         WebElement addButton = driver.findElement(By.id("add_btn"));
         addButton.click();
-        try {
-            Thread.sleep(7000);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
 
         // Verify Row 2 input field is displayed
         WebElement row2InputField = driver.findElement(By.xpath("//div[@id='row2']/input"));
